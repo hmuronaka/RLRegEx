@@ -29,5 +29,17 @@ extension String {
         return nil
     }
     
+    public func gsub(pattern:String, error:NSErrorPointer) -> String? {
+        
+        let regex = NSRegularExpression(pattern: pattern, options:NSRegularExpressionOptions.allZeros, error: error)
+        
+        if error != nil {
+            return nil
+        }
+        
+        if let nsmatch = regex?.stringByReplacingMatchesInString(pattern, options: NSMatchingOptions.allZeros, range: <#NSRange#>, withTemplate: <#String#>)
+        
+    }
+    
    
 }
