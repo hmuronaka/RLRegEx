@@ -10,6 +10,9 @@ import Foundation
 
 extension String {
     
+    // MARK: -
+    // MARK: match
+    
     public func match(pattern:String) -> RLMatch?  {
         return self.match(pattern, error:nil)
     }
@@ -29,6 +32,9 @@ extension String {
         return nil
     }
     
+    
+    // MARK: -
+    // MARK: gsub
     public func gsub(pattern:String, replacement:String) -> String? {
         return self.stringByReplacingOccurrencesOfString(pattern, withString: replacement, options:NSStringCompareOptions.RegularExpressionSearch , range: self.range())
     }
@@ -38,10 +44,6 @@ extension String {
             options |= NSStringCompareOptions.RegularExpressionSearch
         }
         return self.stringByReplacingOccurrencesOfString(pattern, withString: replacement, options:options, range: self.range())
-    }
-    
-    public func gsub(pattern:String, replacement:String, error:NSErrorPointer) -> String? {
-        return self.stringByReplacingOccurrencesOfString(pattern, withString: replacement, options:NSStringCompareOptions.RegularExpressionSearch , range: self.range())
     }
     
 }

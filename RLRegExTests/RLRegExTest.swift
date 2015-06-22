@@ -76,7 +76,10 @@ class RLRegExTest: XCTestCase {
         XCTAssertEqual("http://AC/AC/", "http://ac/bd/".gsub("/\\w+", replacement: "/AC")!)
     }
     
-
+    func test_gsub2() {
+        XCTAssertEqual("acbd", "http://ac/bd/".gsub("/(\\w+)", replacement: "$1")!)
+    }
+ 
     func testExample() {
         // This is an example of a functional test case.
         XCTAssert(true, "Pass")
