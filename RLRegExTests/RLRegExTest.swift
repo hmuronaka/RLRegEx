@@ -21,6 +21,9 @@ class RLRegExTest: XCTestCase {
         super.tearDown()
     }
     
+    
+    // MARK: -
+    // MARK: match
     func testRegExFound() {
         
         if let result = "http://C/TableName/".match("http://C/([^/]+)") {
@@ -57,12 +60,22 @@ class RLRegExTest: XCTestCase {
         
         if let result = "http://AC/BD".match("http://([^/]+)/([^/]+)") {
             XCTAssertEqual(3, result.count)
+            XCTAssertEqual("AC", result[1])
+            XCTAssertEqual("BD", result[2])
         } else {
-            XCTAssert(true)
+            XCTAssert(false)
         }
         
     }
-
+    
+    
+    // MARK: -
+    // MARK: gsub
+    
+    func test_gsub() {
+        XCTAssertEqual("http://AC/AC/", "http://ac/bd/".gsub("/\\w+", replacement: "/AC")!)
+    }
+    
 
     func testExample() {
         // This is an example of a functional test case.

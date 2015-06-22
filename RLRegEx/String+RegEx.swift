@@ -29,17 +29,19 @@ extension String {
         return nil
     }
     
-    public func gsub(pattern:String, error:NSErrorPointer) -> String? {
-        
-        let regex = NSRegularExpression(pattern: pattern, options:NSRegularExpressionOptions.allZeros, error: error)
-        
-        if error != nil {
-            return nil
-        }
-        
-        if let nsmatch = regex?.stringByReplacingMatchesInString(pattern, options: NSMatchingOptions.allZeros, range: <#NSRange#>, withTemplate: <#String#>)
-        
+    public func gsub(pattern:String, replacement:String) -> String? {
+        return self.stringByReplacingOccurrencesOfString(pattern, withString: replacement, options:NSStringCompareOptions.RegularExpressionSearch , range: self.range())
     }
     
-   
+    public func gsub(pattern:String, replacement:String, var options:NSStringCompareOptions) -> String? {
+        if (options & NSStringCompareOptions.RegularExpressionSearch != nil) {
+            options |= NSStringCompareOptions.RegularExpressionSearch
+        }
+        return self.stringByReplacingOccurrencesOfString(pattern, withString: replacement, options:options, range: self.range())
+    }
+    
+    public func gsub(pattern:String, replacement:String, error:NSErrorPointer) -> String? {
+        return self.stringByReplacingOccurrencesOfString(pattern, withString: replacement, options:NSStringCompareOptions.RegularExpressionSearch , range: self.range())
+    }
+    
 }
