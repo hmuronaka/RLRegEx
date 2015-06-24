@@ -11,6 +11,10 @@
 		D6801E801B3AD4C900AA2FE5 /* RLOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6801E7C1B3AD4C900AA2FE5 /* RLOperator.swift */; };
 		D6801E811B3AD4C900AA2FE5 /* String+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6801E7D1B3AD4C900AA2FE5 /* String+extension.swift */; };
 		D6801E821B3AD4C900AA2FE5 /* String+RegEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6801E7E1B3AD4C900AA2FE5 /* String+RegEx.swift */; };
+		D6801E831B3AD5C100AA2FE5 /* RLMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6801E7B1B3AD4C900AA2FE5 /* RLMatch.swift */; };
+		D6801E841B3AD5C400AA2FE5 /* RLOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6801E7C1B3AD4C900AA2FE5 /* RLOperator.swift */; };
+		D6801E851B3AD5C800AA2FE5 /* String+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6801E7D1B3AD4C900AA2FE5 /* String+extension.swift */; };
+		D6801E861B3AD5CB00AA2FE5 /* String+RegEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6801E7E1B3AD4C900AA2FE5 /* String+RegEx.swift */; };
 		D6E088891B357D6500C22885 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E088881B357D6500C22885 /* AppDelegate.swift */; };
 		D6E0888B1B357D6500C22885 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E0888A1B357D6500C22885 /* ViewController.swift */; };
 		D6E0888E1B357D6500C22885 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6E0888C1B357D6500C22885 /* Main.storyboard */; };
@@ -245,7 +249,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6801E851B3AD5C800AA2FE5 /* String+extension.swift in Sources */,
 				D6E088A91B357D9100C22885 /* RLRegExTest.swift in Sources */,
+				D6801E861B3AD5CB00AA2FE5 /* String+RegEx.swift in Sources */,
+				D6801E831B3AD5C100AA2FE5 /* RLMatch.swift in Sources */,
+				D6801E841B3AD5C400AA2FE5 /* RLOperator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
