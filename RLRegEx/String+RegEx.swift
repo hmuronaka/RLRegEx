@@ -36,7 +36,15 @@ extension String {
     // MARK: -
     // MARK: gsub
     public func gsub(pattern:String, replacement:String) -> String? {
-        let regex = NSRegularExpression(pattern: pattern, options: NSRegularExpressionOptions.allZeros, error: nil)
+        return self.gsub(pattern, replacement:replacement, error:nil)
+    }
+    
+    public func gsub(pattern:String, replacement:String, error:NSErrorPointer) -> String? {
+        let regex = NSRegularExpression(pattern: pattern, options: NSRegularExpressionOptions.allZeros, error: error)
+        
+        if error != nil && error.memory != nil {
+            return nil
+        }
         
         return regex?.stringByReplacingMatchesInString(self, options: NSMatchingOptions.allZeros, range: self.nsrange(), withTemplate: replacement)
     }

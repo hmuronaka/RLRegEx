@@ -71,7 +71,6 @@ class RLRegExTest: XCTestCase {
     
     // MARK: -
     // MARK: gsub
-    
     func test_gsubNoTemplate() {
         XCTAssertEqual("http://AC/AC/", "http://ac/bd/".gsub("/\\w+", replacement: "/AC")!)
     }
@@ -84,6 +83,27 @@ class RLRegExTest: XCTestCase {
         XCTAssertEqual("http://acbd/", "http://ac/bd/".gsub("(\\w+)/(\\w+)", replacement: "$1$2")!)
         XCTAssertEqual("acbd/", "http://ac/bd/".gsub("http://(\\w+)/(\\w+)", replacement: "$1$2")!)
         XCTAssertEqual("acbd", "http://ac/bd/".gsub("http://(\\w+)/(\\w+)/", replacement: "$1$2")!)
+    }
+    
+    func test_gsubError() {
+        var error:NSError?
+        
+        if let str = "http".gsub("([", replacement: "afd", error:&error) {
+            XCTFail("fail")
+        } else {
+            XCTAssertNotNil(error, "\(error)")
+        }
+    }
+    
+    func test_gusbNoError() {
+        var error:NSError? = nil
+        
+        if let str = "http".gsub("tp", replacement: "TP", error:&error) {
+            XCTAssertNil(error)
+            XCTAssertEqual("htTP", str)
+        } else {
+            XCTFail("fail \(error)")
+        }
     }
  
     func testExample() {
