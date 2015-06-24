@@ -15,7 +15,6 @@
 		D6E0888E1B357D6500C22885 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6E0888C1B357D6500C22885 /* Main.storyboard */; };
 		D6E088901B357D6500C22885 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6E0888F1B357D6500C22885 /* Images.xcassets */; };
 		D6E088931B357D6500C22885 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6E088911B357D6500C22885 /* LaunchScreen.xib */; };
-		D6E0889F1B357D6500C22885 /* RLRegExTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E0889E1B357D6500C22885 /* RLRegExTests.swift */; };
 		D6E088A91B357D9100C22885 /* RLRegExTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E088A81B357D9100C22885 /* RLRegExTest.swift */; };
 		D6E088AD1B35EF2000C22885 /* RLMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E088AB1B35EF2000C22885 /* RLMatch.swift */; };
 		D6E088AE1B35EF2000C22885 /* String+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E088AC1B35EF2000C22885 /* String+extension.swift */; };
@@ -45,7 +44,6 @@
 		D6E088921B357D6500C22885 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		D6E088981B357D6500C22885 /* RLRegExTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RLRegExTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6E0889D1B357D6500C22885 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D6E0889E1B357D6500C22885 /* RLRegExTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RLRegExTests.swift; sourceTree = "<group>"; };
 		D6E088A81B357D9100C22885 /* RLRegExTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RLRegExTest.swift; sourceTree = "<group>"; };
 		D6E088AB1B35EF2000C22885 /* RLMatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RLMatch.swift; sourceTree = "<group>"; };
 		D6E088AC1B35EF2000C22885 /* String+extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+extension.swift"; sourceTree = "<group>"; };
@@ -113,7 +111,6 @@
 		D6E0889B1B357D6500C22885 /* RLRegExTests */ = {
 			isa = PBXGroup;
 			children = (
-				D6E0889E1B357D6500C22885 /* RLRegExTests.swift */,
 				D6E0889C1B357D6500C22885 /* Supporting Files */,
 				D6E088A81B357D9100C22885 /* RLRegExTest.swift */,
 			);
@@ -255,7 +252,6 @@
 				D6682E8C1B3843C300D4231A /* RLOperator.swift in Sources */,
 				D6E088B21B35F82700C22885 /* String+extension.swift in Sources */,
 				D6E088B11B35F82200C22885 /* RLMatch.swift in Sources */,
-				D6E0889F1B357D6500C22885 /* RLRegExTests.swift in Sources */,
 				D6682E8D1B3843C700D4231A /* String+RegEx.swift in Sources */,
 				D6E088A91B357D9100C22885 /* RLRegExTest.swift in Sources */,
 			);
