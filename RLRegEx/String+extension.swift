@@ -43,6 +43,10 @@ public extension String {
         return Range(start:self.startIndex, end:self.endIndex)
     }
     
+    internal func nsrange() -> NSRange {
+        return NSMakeRange(0, count(self))
+    }
+    
     internal func rangeFromNSRange(nsrange:NSRange) -> Range<String.Index> {
         return Range<String.Index>(start: advance(self.startIndex, nsrange.location), end: advance(self.startIndex, nsrange.location + nsrange.length))
     }

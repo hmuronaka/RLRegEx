@@ -36,43 +36,9 @@ extension String {
     // MARK: -
     // MARK: gsub
     public func gsub(pattern:String, replacement:String) -> String? {
-        return self.stringByReplacingOccurrencesOfString(pattern, withString: replacement, options:NSStringCompareOptions.RegularExpressionSearch , range: self.range())
-    }
-    
-    public func gsub(pattern:String, replacement:String, var options:NSStringCompareOptions) -> String? {
-        if (options & NSStringCompareOptions.RegularExpressionSearch != nil) {
-            options |= NSStringCompareOptions.RegularExpressionSearch
-        }
-        return self.stringByReplacingOccurrencesOfString(pattern, withString: replacement, options:options, range: self.range())
-    }
-    
-    public func gsub2(pattern:String, replacement:String, error:NSErrorPointer) -> String? {
-        let regex = NSRegularExpression(pattern: pattern, options: NSRegularExpressionOptions.allZeros, error: error)
+        let regex = NSRegularExpression(pattern: pattern, options: NSRegularExpressionOptions.allZeros, error: nil)
         
-        if error != nil {
-            return nil
-        }
-        
-        var mutableStr = 
-        if let nsmatch = regex?.firstMatchInString(self , options: NSMatchingOptions.allZeros, range: NSMakeRange(0, count(self))) {
-            if nsmatch.range.location != NSNotFound {
-                for var i = nsmatch.numberOfRanges - 1; i > 0; --i {
-                    let range = nsmatch.rangeAtIndex(i)
-                    
-                    
-                }
-                
-                
-                
-                return RLMatch(originalString: self, match: nsmatch)
-            }
-        }
-        return nil
-    }
-    
-    // MARK: -
-    // MARK: private
-    private func matchImpl(regex:NSRegularExpression, error:NSErrorPointer) -> NSTextCheckingResult? {
+        return regex?.stringByReplacingMatchesInString(self, options: NSMatchingOptions.allZeros, range: self.nsrange(), withTemplate: replacement)
     }
     
 }
