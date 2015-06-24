@@ -46,6 +46,17 @@ class RLRegExTest: XCTestCase {
         }
     }
     
+    func testRegExNoError() {
+        var error:NSError?
+        
+        if let result = "http://C/TableName/".match("http", error:&error) {
+            XCTAssertEqual(1, result.count)
+            XCTAssertEqual("http", result[0])
+        } else {
+            XCTFail("fail")
+        }
+    }
+    
     func testRegExNotFound() {
         
         if let result = "http://C//".match("http://C/([^/]+)") {

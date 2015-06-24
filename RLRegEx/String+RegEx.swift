@@ -20,7 +20,7 @@ extension String {
     public func match(pattern:String, error:NSErrorPointer) -> RLMatch?  {
         let regex = NSRegularExpression(pattern: pattern, options: NSRegularExpressionOptions.allZeros, error: error)
         
-        if error != nil {
+        if error != nil && error.memory != nil {
             return nil
         }
         
