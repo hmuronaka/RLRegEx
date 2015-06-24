@@ -79,6 +79,19 @@ class RLRegExTest: XCTestCase {
         
     }
     
+    func testRegExWords() {
+        if let result = "http://AC/BD/CE".match("(\\w+)") {
+            XCTAssertEqual(4, result.count)
+            XCTAssertEqual("http", result[0])
+            XCTAssertEqual("AC", result[1])
+            XCTAssertEqual("BD", result[2])
+            XCTAssertEqual("CE", result[3])
+        } else {
+            XCTAssert(false)
+        }
+        
+    }
+    
     
     // MARK: -
     // MARK: gsub
