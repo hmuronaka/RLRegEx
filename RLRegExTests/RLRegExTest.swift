@@ -139,8 +139,25 @@ class RLRegExTest: XCTestCase {
         }
     }
     
+    func test_matchesFoundWithoutError() {
+        "http".matches("http") { (rlMatch) -> Bool in
+            XCTAssertEqual(rlMatch[0], "http")
+            XCTAssertEqual(1, rlMatch.count)
+            return true
+        }
+    }
+    
     func test_matchesFound2() {
         "http".matches("(\\w)tp(\\w)", error: nil) { (rlMatch) -> Bool in
+            XCTAssertEqual(rlMatch[0], "h")
+            XCTAssertEqual(rlMatch[1], "p")
+            XCTAssertEqual(2, rlMatch.count)
+            return true
+        }
+    }
+    
+    func test_matchesFoundWithoutError2() {
+        "http".matches("(\\w)tp(\\w)") { (rlMatch) -> Bool in
             XCTAssertEqual(rlMatch[0], "h")
             XCTAssertEqual(rlMatch[1], "p")
             XCTAssertEqual(2, rlMatch.count)
@@ -153,6 +170,40 @@ class RLRegExTest: XCTestCase {
         var total = 0
         
         "http".matches("(\\w)", error: nil) { (rlMatch) -> Bool in
+            switch(total) {
+            case 0:
+                XCTAssertEqual("h", rlMatch[0])
+                XCTAssertEqual("h", rlMatch[1])
+                XCTAssertEqual(2, rlMatch.count)
+                break;
+            case 1:
+                XCTAssertEqual("t", rlMatch[0])
+                XCTAssertEqual("t", rlMatch[1])
+                XCTAssertEqual(2, rlMatch.count)
+                break;
+            case 2:
+                XCTAssertEqual("t", rlMatch[0])
+                XCTAssertEqual("t", rlMatch[1])
+                XCTAssertEqual(2, rlMatch.count)
+                break;
+            case 3:
+                XCTAssertEqual("p", rlMatch[0])
+                XCTAssertEqual("p", rlMatch[1])
+                XCTAssertEqual(2, rlMatch.count)
+                break;
+            default:
+                XCTFail("default is fail")
+            }
+            total++
+            return true
+        }
+        XCTAssertEqual(4, total)
+    }
+    func test_matchesFoundWithoutError3() {
+        
+        var total = 0
+        
+        "http".matches("(\\w)") { (rlMatch) -> Bool in
             switch(total) {
             case 0:
                 XCTAssertEqual("h", rlMatch[0])

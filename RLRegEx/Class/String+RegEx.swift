@@ -32,6 +32,10 @@ extension String {
         return nil
     }
     
+    public func matches(pattern:String, block:(RLMatch) -> Bool) {
+        self.matches(pattern, error:nil, block:block)
+    }
+    
     public func matches(pattern:String, error:NSErrorPointer, block:(RLMatch) -> Bool) {
         let regex = NSRegularExpression(pattern: pattern, options: NSRegularExpressionOptions.allZeros, error: error)
         
