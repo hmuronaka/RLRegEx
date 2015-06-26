@@ -32,6 +32,24 @@ extension String {
         return nil
     }
     
+    public func matches(pattern:String, error:NSErrorPointer, block:(RLMatch) -> Bool) {
+        let regex = NSRegularExpression(pattern: pattern, options: NSRegularExpressionOptions.allZeros, error: error)
+        
+        if error != nil && error.memory != nil {
+            return
+        }
+        
+        regex?.enumerateMatchesInString(self, options: NSMatchingOptions.allZeros, range: self.nsrange(), usingBlock: { (checkingResult:NSTextCheckingResult!, matchingFlags:NSMatchingFlags, var stop:UnsafeMutablePointer<ObjCBool>)  -> Void in
+            
+            let rlMatch = RLMatch(originalString:self, match:checkingResult)
+            
+            let isContinue = block(rlMatch)
+            
+            stop.put(ObjCBool(!isContinue))
+            
+        })
+    }
+    
     
     // MARK: -
     // MARK: gsub

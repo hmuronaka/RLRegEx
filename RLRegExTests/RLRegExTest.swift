@@ -129,7 +129,81 @@ class RLRegExTest: XCTestCase {
             XCTFail("fail \(error)")
         }
     }
- 
+    
+    // MARK: -
+    // MARK: matches
+    func test_matchesFound() {
+        "http".matches("http", error: nil) { (rlMatch) -> Bool in
+            XCTAssertEqual(rlMatch[0], "http")
+            XCTAssertEqual(1, rlMatch.count)
+            return true
+        }
+    }
+    
+    func test_matchesFound2() {
+        "http".matches("(\\w)tp(\\w)", error: nil) { (rlMatch) -> Bool in
+            XCTAssertEqual(rlMatch[0], "h")
+            XCTAssertEqual(rlMatch[1], "p")
+            XCTAssertEqual(2, rlMatch.count)
+            return true
+        }
+    }
+    
+    func test_matchesFound3() {
+        
+        var total = 0
+        
+        "http".matches("(\\w)", error: nil) { (rlMatch) -> Bool in
+            switch(total) {
+            case 0:
+                XCTAssertEqual("h", rlMatch[0])
+                XCTAssertEqual("h", rlMatch[1])
+                XCTAssertEqual(2, rlMatch.count)
+                break;
+            case 1:
+                XCTAssertEqual("t", rlMatch[0])
+                XCTAssertEqual("t", rlMatch[1])
+                XCTAssertEqual(2, rlMatch.count)
+                break;
+            case 2:
+                XCTAssertEqual("t", rlMatch[0])
+                XCTAssertEqual("t", rlMatch[1])
+                XCTAssertEqual(2, rlMatch.count)
+                break;
+            case 3:
+                XCTAssertEqual("p", rlMatch[0])
+                XCTAssertEqual("p", rlMatch[1])
+                XCTAssertEqual(2, rlMatch.count)
+                break;
+            default:
+                XCTFail("default is fail")
+            }
+            total++
+            return true
+        }
+        XCTAssertEqual(4, total)
+    }
+    
+    func test_matchesStop() {
+        
+        var total = 0
+        
+        "http".matches("(\\w)", error: nil) { (rlMatch) -> Bool in
+            switch(total) {
+            case 0:
+                XCTAssertEqual("h", rlMatch[0])
+                XCTAssertEqual("h", rlMatch[1])
+                XCTAssertEqual(2, rlMatch.count)
+                break;
+            default:
+                XCTFail("default is fail")
+            }
+            total++
+            return false
+        }
+        XCTAssertEqual(1, total)
+    }
+  
     func testExample() {
         // This is an example of a functional test case.
         XCTAssert(true, "Pass")
