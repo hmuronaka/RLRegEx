@@ -32,23 +32,22 @@ extension String {
         return nil
     }
     
-    public func matches(pattern:String, error:NSErrorPointer) -> [RLMatch]? {
+    public func matches(pattern:String, error:NSErrorPointer, block:(RLMatch) -> Bool) {
         let regex = NSRegularExpression(pattern: pattern, options: NSRegularExpressionOptions.allZeros, error: error)
         
         if error != nil && error.memory != nil {
-            return nil
+            return
         }
         
-        var result = [RLMatch]()
-        
-        if let anyObjs = regex?.matchesInString(self, options: NSMatchingOptions.allZeros, range: self.nsrange()) {
-            if let nsmatches = anyObjs as? [NSTextCheckingResult] {
-                for nsmatch in nsmatches {
-                    result.append(RLMatch(originalString: self, match: nsmatch))
-                }
-            }
-        }
-        return result
+        regex?.enumerateMatchesInString(self, options: NSMatchingOptions.allZeros, range: self.nsrange(), usingBlock: { (checkingResult:NSTextCheckingResult!, matchingFlags:NSMatchingFlags, var stop:UnsafeMutablePointer<ObjCBool>)  -> Void in
+            
+            let rlMatch = RLMatch(originalString:self, match:checkingResult)
+            
+            let isContinue = block(rlMatch)
+            
+            stop.put(ObjCBool(!isContinue))
+            
+        })
     }
     
     
