@@ -32,6 +32,25 @@ extension String {
         return nil
     }
     
+    public func matches(pattern:String, error:NSErrorPointer) -> [RLMatch]? {
+        let regex = NSRegularExpression(pattern: pattern, options: NSRegularExpressionOptions.allZeros, error: error)
+        
+        if error != nil && error.memory != nil {
+            return nil
+        }
+        
+        var result = [RLMatch]()
+        
+        if let anyObjs = regex?.matchesInString(self, options: NSMatchingOptions.allZeros, range: self.nsrange()) {
+            if let nsmatches = anyObjs as? [NSTextCheckingResult] {
+                for nsmatch in nsmatches {
+                    result.append(RLMatch(originalString: self, match: nsmatch))
+                }
+            }
+        }
+        return result
+    }
+    
     
     // MARK: -
     // MARK: gsub
