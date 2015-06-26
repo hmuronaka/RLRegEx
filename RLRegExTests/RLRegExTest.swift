@@ -71,6 +71,7 @@ class RLRegExTest: XCTestCase {
         
         if let result = "http://AC/BD".match("http://([^/]+)/([^/]+)") {
             XCTAssertEqual(3, result.count)
+            XCTAssertEqual("http://AC/BD", result[0])
             XCTAssertEqual("AC", result[1])
             XCTAssertEqual("BD", result[2])
         } else {
@@ -81,11 +82,9 @@ class RLRegExTest: XCTestCase {
     
     func testRegExWords() {
         if let result = "http://AC/BD/CE".match("(\\w+)") {
-            XCTAssertEqual(4, result.count)
+            XCTAssertEqual(2, result.count)
             XCTAssertEqual("http", result[0])
-            XCTAssertEqual("AC", result[1])
-            XCTAssertEqual("BD", result[2])
-            XCTAssertEqual("CE", result[3])
+            XCTAssertEqual("http", result[1])
         } else {
             XCTAssert(false)
         }
