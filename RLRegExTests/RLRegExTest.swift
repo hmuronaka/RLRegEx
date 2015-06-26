@@ -21,6 +21,9 @@ class RLRegExTest: XCTestCase {
         super.tearDown()
     }
     
+    
+    // MARK: -
+    // MARK: match
     func testRegExFound() {
         
         if let result = "http://C/TableName/".match("http://C/([^/]+)") {
@@ -43,6 +46,17 @@ class RLRegExTest: XCTestCase {
         }
     }
     
+    func testRegExNoError() {
+        var error:NSError?
+        
+        if let result = "http://C/TableName/".match("http", error:&error) {
+            XCTAssertEqual(1, result.count)
+            XCTAssertEqual("http", result[0])
+        } else {
+            XCTFail("fail")
+        }
+    }
+    
     func testRegExNotFound() {
         
         if let result = "http://C//".match("http://C/([^/]+)") {
@@ -57,13 +71,138 @@ class RLRegExTest: XCTestCase {
         
         if let result = "http://AC/BD".match("http://([^/]+)/([^/]+)") {
             XCTAssertEqual(3, result.count)
+            XCTAssertEqual("http://AC/BD", result[0])
+            XCTAssertEqual("AC", result[1])
+            XCTAssertEqual("BD", result[2])
         } else {
-            XCTAssert(true)
+            XCTAssert(false)
         }
         
     }
-
-
+    
+    func testRegExWords() {
+        if let result = "http://AC/BD/CE".match("(\\w+)") {
+            XCTAssertEqual(2, result.count)
+            XCTAssertEqual("http", result[0])
+            XCTAssertEqual("http", result[1])
+        } else {
+            XCTAssert(false)
+        }
+        
+    }
+    
+    
+    // MARK: -
+    // MARK: gsub
+    func test_gsubNoTemplate() {
+        XCTAssertEqual("http://AC/AC/", "http://ac/bd/".gsub("/\\w+", replacement: "/AC")!)
+    }
+    
+    func test_gsubTemplate() {
+        XCTAssertEqual("http://ac/bd/", "http://ac/bd/".gsub("http://(\\w+)/(\\w+)", replacement: "$0")!)
+        XCTAssertEqual("ac/", "http://ac/bd/".gsub("http://(\\w+)/(\\w+)", replacement: "$1")!)
+        XCTAssertEqual("ac", "http://ac/bd/".gsub("http://(\\w+)/(\\w+)/", replacement: "$1")!)
+        XCTAssertEqual("http://bd/", "http://ac/bd/".gsub("(\\w+)/(\\w+)", replacement: "$2")!)
+        XCTAssertEqual("http://acbd/", "http://ac/bd/".gsub("(\\w+)/(\\w+)", replacement: "$1$2")!)
+        XCTAssertEqual("acbd/", "http://ac/bd/".gsub("http://(\\w+)/(\\w+)", replacement: "$1$2")!)
+        XCTAssertEqual("acbd", "http://ac/bd/".gsub("http://(\\w+)/(\\w+)/", replacement: "$1$2")!)
+    }
+    
+    func test_gsubError() {
+        var error:NSError?
+        
+        if let str = "http".gsub("([", replacement: "afd", error:&error) {
+            XCTFail("fail")
+        } else {
+            XCTAssertNotNil(error, "\(error)")
+        }
+    }
+    
+    func test_gusbNoError() {
+        var error:NSError? = nil
+        
+        if let str = "http".gsub("tp", replacement: "TP", error:&error) {
+            XCTAssertNil(error)
+            XCTAssertEqual("htTP", str)
+        } else {
+            XCTFail("fail \(error)")
+        }
+    }
+    
+    // MARK: -
+    // MARK: matches
+    func test_matchesFound() {
+        "http".matches("http", error: nil) { (rlMatch) -> Bool in
+            XCTAssertEqual(rlMatch[0], "http")
+            XCTAssertEqual(1, rlMatch.count)
+            return true
+        }
+    }
+    
+    func test_matchesFound2() {
+        "http".matches("(\\w)tp(\\w)", error: nil) { (rlMatch) -> Bool in
+            XCTAssertEqual(rlMatch[0], "h")
+            XCTAssertEqual(rlMatch[1], "p")
+            XCTAssertEqual(2, rlMatch.count)
+            return true
+        }
+    }
+    
+    func test_matchesFound3() {
+        
+        var total = 0
+        
+        "http".matches("(\\w)", error: nil) { (rlMatch) -> Bool in
+            switch(total) {
+            case 0:
+                XCTAssertEqual("h", rlMatch[0])
+                XCTAssertEqual("h", rlMatch[1])
+                XCTAssertEqual(2, rlMatch.count)
+                break;
+            case 1:
+                XCTAssertEqual("t", rlMatch[0])
+                XCTAssertEqual("t", rlMatch[1])
+                XCTAssertEqual(2, rlMatch.count)
+                break;
+            case 2:
+                XCTAssertEqual("t", rlMatch[0])
+                XCTAssertEqual("t", rlMatch[1])
+                XCTAssertEqual(2, rlMatch.count)
+                break;
+            case 3:
+                XCTAssertEqual("p", rlMatch[0])
+                XCTAssertEqual("p", rlMatch[1])
+                XCTAssertEqual(2, rlMatch.count)
+                break;
+            default:
+                XCTFail("default is fail")
+            }
+            total++
+            return true
+        }
+        XCTAssertEqual(4, total)
+    }
+    
+    func test_matchesStop() {
+        
+        var total = 0
+        
+        "http".matches("(\\w)", error: nil) { (rlMatch) -> Bool in
+            switch(total) {
+            case 0:
+                XCTAssertEqual("h", rlMatch[0])
+                XCTAssertEqual("h", rlMatch[1])
+                XCTAssertEqual(2, rlMatch.count)
+                break;
+            default:
+                XCTFail("default is fail")
+            }
+            total++
+            return false
+        }
+        XCTAssertEqual(1, total)
+    }
+  
     func testExample() {
         // This is an example of a functional test case.
         XCTAssert(true, "Pass")

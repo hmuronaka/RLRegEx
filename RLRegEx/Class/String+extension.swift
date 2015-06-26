@@ -10,6 +10,10 @@ import Foundation
 
 public extension String {
     
+    
+    // MARK -
+    // MARK substring
+    
     internal func substringSafety(# fromIndex:Int, length:Int) -> String {
         
         if fromIndex > count(self) {
@@ -33,6 +37,14 @@ public extension String {
     
     internal func substringWithNSRange(nsrange:NSRange) -> String {
         return substringSafety(fromIndex:nsrange.location, length: nsrange.length)
+    }
+    
+    internal func range() -> Range<String.Index> {
+        return Range(start:self.startIndex, end:self.endIndex)
+    }
+    
+    internal func nsrange() -> NSRange {
+        return NSMakeRange(0, count(self))
     }
     
     internal func rangeFromNSRange(nsrange:NSRange) -> Range<String.Index> {
