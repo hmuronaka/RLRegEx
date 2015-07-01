@@ -41,4 +41,24 @@ public class RLMatch: NSObject {
         return result
     }
     
+    public func rangeAtIndex(index:Int) -> Range<String.Index> {
+        
+        if let matchResult = match {
+            
+            if 0 ..< count ~= index {
+                
+                let range = matchResult.rangeAtIndex(index)
+                return Range<String.Index>(start: advance(originalString.startIndex, range.location),
+                    end: advance(originalString.startIndex, range.location + range.length))
+                
+            }
+            
+        }
+        
+        
+        let dmmy = ""
+        return Range<String.Index>(start: dmmy.startIndex, end: dmmy.startIndex)
+        
+    }
+    
 }
