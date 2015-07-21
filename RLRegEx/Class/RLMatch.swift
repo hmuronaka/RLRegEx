@@ -5,7 +5,7 @@
 //  Copyright (c) 2015年 Muronaka Hiroaki. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 public class RLMatch: NSObject {
     
