@@ -8,10 +8,9 @@
 import UIKit
 
 public class RLMatch: NSObject {
-    
     let originalString:String
     var match:NSTextCheckingResult!
-    
+
     var count:Int {
         get {
             if let result = match {
@@ -21,44 +20,47 @@ public class RLMatch: NSObject {
             }
         }
     }
-    
+
     init(originalString:String, match: NSTextCheckingResult!) {
         self.originalString = originalString
         self.match = match
         super.init()
     }
-    
+
     public subscript(index:Int) -> String {
         var result:String = ""
-        
+
         if index < count {
             if let result = match {
                 let range = result.rangeAtIndex(index)
                 return self.originalString.substringWithNSRange(range)
             }
         }
-        
         return result
     }
-    
+
     public func rangeAtIndex(index:Int) -> Range<String.Index> {
-        
-        if let matchResult = match {
-            
-            if 0 ..< count ~= index {
-                
-                let range = matchResult.rangeAtIndex(index)
-                return Range<String.Index>(start: advance(originalString.startIndex, range.location),
-                    end: advance(originalString.startIndex, range.location + range.length))
-                
-            }
-            
+
+        if let nsrange = nsrangeAtIndex(index) {
+            return Range<String.Index>(start:advance(originalString.startIndex, nsrange.location),
+                end:advance(originalString.startIndex, nsrange.location + nsrange.length))
         }
-        
-        
+
         let dmmy = ""
-        return Range<String.Index>(start: dmmy.startIndex, end: dmmy.startIndex)
-        
+        return Range<String.Index>(start:dmmy.startIndex, end:dmmy.startIndex)
     }
-    
+
+    private func nsrangeAtIndex(index:Int) -> NSRange? {
+
+        if let matchResult = match {
+            if 0 ..< count ~= index {
+                let range = matchResult.rangeAtIndex(index)
+                return range
+            }
+        }
+
+        let dmmy = ""
+        return nil
+    }
+
 }

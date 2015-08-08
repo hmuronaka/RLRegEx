@@ -35,7 +35,7 @@
 
 /* Begin PBXFileReference section */
 		D60AE7DB1B3DA5A7009B7A36 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		D6801E7B1B3AD4C900AA2FE5 /* RLMatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RLMatch.swift; path = Class/RLMatch.swift; sourceTree = "<group>"; };
+		D6801E7B1B3AD4C900AA2FE5 /* RLMatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RLMatch.swift; path = Class/RLMatch.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		D6801E7C1B3AD4C900AA2FE5 /* RLOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RLOperator.swift; path = Class/RLOperator.swift; sourceTree = "<group>"; };
 		D6801E7D1B3AD4C900AA2FE5 /* String+extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+extension.swift"; path = "Class/String+extension.swift"; sourceTree = "<group>"; };
 		D6801E7E1B3AD4C900AA2FE5 /* String+RegEx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+RegEx.swift"; path = "Class/String+RegEx.swift"; sourceTree = "<group>"; };
