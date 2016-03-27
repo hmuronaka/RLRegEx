@@ -14,41 +14,41 @@ public extension String {
     // MARK -
     // MARK substring
     
-    internal func substringSafety(# fromIndex:Int, length:Int) -> String {
+    internal func substringSafetyFromIndex(fromIndex:Int, length:Int) -> String {
         
-        if fromIndex > count(self) {
+        if fromIndex > self.characters.count {
             return ""
         }
         
         var endIndex:Int
         if(length == -1) {
-            endIndex = count(self)
+            endIndex = self.characters.count
         } else {
             endIndex = fromIndex + length
-            endIndex = min(endIndex, count(self))
+            endIndex = min(endIndex, self.characters.count)
         }
         
-        return self.substringWithRange(Range(start:advance(self.startIndex, fromIndex), end:advance(self.startIndex, endIndex)))
+        return self.substringWithRange(  self.startIndex.advancedBy(fromIndex)..<self.startIndex.advancedBy(endIndex))
     }
     
-    internal func substringSafety(# fromIndex:Int) -> String {
-        return substringSafety(fromIndex: fromIndex, length: -1)
+    internal func substringSafety(fromIndex:Int) -> String {
+        return substringSafetyFromIndex(fromIndex, length: -1)
     }
     
     internal func substringWithNSRange(nsrange:NSRange) -> String {
-        return substringSafety(fromIndex:nsrange.location, length: nsrange.length)
+        return substringSafetyFromIndex(nsrange.location, length: nsrange.length)
     }
     
     internal func range() -> Range<String.Index> {
-        return Range(start:self.startIndex, end:self.endIndex)
+        return  self.startIndex..<self.endIndex
     }
     
     internal func nsrange() -> NSRange {
-        return NSMakeRange(0, count(self))
+        return NSMakeRange(0, self.characters.count)
     }
     
     internal func rangeFromNSRange(nsrange:NSRange) -> Range<String.Index> {
-        return Range<String.Index>(start: advance(self.startIndex, nsrange.location), end: advance(self.startIndex, nsrange.location + nsrange.length))
+        return  self.startIndex.advancedBy(nsrange.location)..<self.startIndex.advancedBy(nsrange.location + nsrange.length)
     }
     
 

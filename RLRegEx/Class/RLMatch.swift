@@ -28,7 +28,7 @@ public class RLMatch: NSObject {
     }
 
     public subscript(index:Int) -> String {
-        var result:String = ""
+        let result:String = ""
 
         if index < count {
             if let result = match {
@@ -42,12 +42,11 @@ public class RLMatch: NSObject {
     public func rangeAtIndex(index:Int) -> Range<String.Index> {
 
         if let nsrange = nsrangeAtIndex(index) {
-            return Range<String.Index>(start:advance(originalString.startIndex, nsrange.location),
-                end:advance(originalString.startIndex, nsrange.location + nsrange.length))
+            return Range<String.Index>(originalString.startIndex.advancedBy(nsrange.location)..<originalString.startIndex.advancedBy(nsrange.location + nsrange.length))
         }
 
         let dmmy = ""
-        return Range<String.Index>(start:dmmy.startIndex, end:dmmy.startIndex)
+        return Range<String.Index>(dmmy.startIndex..<dmmy.startIndex)
     }
 
     private func nsrangeAtIndex(index:Int) -> NSRange? {
@@ -59,7 +58,6 @@ public class RLMatch: NSObject {
             }
         }
 
-        let dmmy = ""
         return nil
     }
 

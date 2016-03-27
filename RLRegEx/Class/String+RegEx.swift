@@ -13,18 +13,21 @@ extension String {
     // MARK: -
     // MARK: match
 
-    public func match(pattern:String) -> RLMatch?  {
-        return self.match(pattern, error:nil)
-    }
-
-    public func match(pattern:String, error:NSErrorPointer) -> RLMatch?  {
-        let regex = NSRegularExpression(pattern: pattern, options: NSRegularExpressionOptions.allZeros, error: error)
-
-        if error != nil && error.memory != nil {
-            return nil
+    public func match(pattern:String) throws -> RLMatch?  {
+        var error: NSError! = nil
+        let regex: NSRegularExpression?
+        do {
+            regex = try NSRegularExpression(pattern: pattern, options: [])
+        } catch let error1 as NSError {
+            error = error1
+            regex = nil
         }
 
-        if let nsmatch = regex?.firstMatchInString(self , options: NSMatchingOptions.allZeros, range: NSMakeRange(0, count(self))) {
+        if true && error != nil {
+            throw error
+        }
+
+        if let nsmatch = regex?.firstMatchInString(self , options: NSMatchingOptions(), range: NSMakeRange(0, self.characters.count)) {
             if nsmatch.range.location != NSNotFound {
                 return RLMatch(originalString: self, match: nsmatch)
             }
@@ -37,38 +40,53 @@ extension String {
     }
 
     public func matches(pattern:String, error:NSErrorPointer, block:(RLMatch) -> Bool) {
-        let regex = NSRegularExpression(pattern: pattern, options: NSRegularExpressionOptions.allZeros, error: error)
+        let regex: NSRegularExpression?
+        do {
+            regex = try NSRegularExpression(pattern: pattern, options: [])
+        } catch let error1 as NSError {
+            error.memory = error1
+            regex = nil
+        }
 
         if error != nil && error.memory != nil {
             return
         }
+        
 
-        regex?.enumerateMatchesInString(self, options: NSMatchingOptions.allZeros, range: self.nsrange(), usingBlock: { (checkingResult:NSTextCheckingResult!, matchingFlags:NSMatchingFlags, var stop:UnsafeMutablePointer<ObjCBool>)  -> Void in
+        regex?.enumerateMatchesInString(self, options: [], range: self.nsrange(), usingBlock: { (checkingResult:NSTextCheckingResult?, matchingFlags:NSMatchingFlags, stop:UnsafeMutablePointer<ObjCBool>) in
 
             let rlMatch = RLMatch(originalString:self, match:checkingResult)
 
             let isContinue = block(rlMatch)
-
-            stop.put(ObjCBool(!isContinue))
-
+            
+            let objcBool = ObjCBool.init(!isContinue)
+            
+            stop.initialize(objcBool)
         })
     }
 
 
     // MARK: -
     // MARK: gsub
-    public func gsub(pattern:String, replacement:String) -> String? {
-        return self.gsub(pattern, replacement:replacement, error:nil)
-    }
+    
 
-    public func gsub(pattern:String, replacement:String, error:NSErrorPointer) -> String? {
-        let regex = NSRegularExpression(pattern: pattern, options: NSRegularExpressionOptions.allZeros, error: error)
-
-        if error != nil && error.memory != nil {
-            return nil
+    public func gsub(pattern:String, replacement:String) throws -> String? {
+//        var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
+        var error:NSError!
+        let regex: NSRegularExpression?
+        do {
+            regex = try NSRegularExpression(pattern: pattern, options: [])
+        } catch let error1 as NSError {
+            error = error1
+            print(error)
+            regex = nil
         }
 
-        return regex?.stringByReplacingMatchesInString(self, options: NSMatchingOptions.allZeros, range: self.nsrange(), withTemplate: replacement)
+        if true && error != nil {
+            throw error
+        }
+
+        return regex!.stringByReplacingMatchesInString(self, options: NSMatchingOptions(), range: self.nsrange(), withTemplate: replacement)
     }
 
 }

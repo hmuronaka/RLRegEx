@@ -26,7 +26,8 @@ class RLRegExTest: XCTestCase {
     // MARK: match
     func testRegExFound() {
         
-        if let result = "http://C/TableName/".match("http://C/([^/]+)") {
+        
+        if let result = try! "http://C/TableName/".match("http://C/([^/]+)") {
             XCTAssertEqual(2, result.count)
             XCTAssertEqual("http://C/TableName", result[0])
             XCTAssertEqual("TableName", result[1])
@@ -39,28 +40,33 @@ class RLRegExTest: XCTestCase {
     func testRegExError() {
         var error:NSError?
         
-        if let result = "http://C/TableName/".match("http://C/([[^/]+)", error:&error) {
+        do {
+            let _ = try "http://C/TableName/".match("http://C/([[^/]+)")
             XCTFail("False")
-        } else {
+        } catch let error1 as NSError {
+            error = error1
             XCTAssertNotNil(error!, "\(error!)")
         }
     }
     
     func testRegExNoError() {
-        var error:NSError?
         
-        if let result = "http://C/TableName/".match("http", error:&error) {
-            XCTAssertEqual(1, result.count)
-            XCTAssertEqual("http", result[0])
-        } else {
+        do {
+            if let result = try "http://C/TableName/".match("http") {
+                XCTAssertEqual(1, result.count)
+                XCTAssertEqual("http", result[0])
+            } else {
+                XCTFail("fail")
+            }
+        } catch {
             XCTFail("fail")
         }
     }
     
     func testRegExNotFound() {
         
-        if let result = "http://C//".match("http://C/([^/]+)") {
-            XCTFail("fail")
+        if let result = try! "http://C//".match("http://C/([^/]+)") {
+            XCTFail(result[0])
         } else {
             XCTAssert(true)
         }
@@ -69,7 +75,7 @@ class RLRegExTest: XCTestCase {
 
     func testRegExFound2() {
         
-        if let result = "http://AC/BD".match("http://([^/]+)/([^/]+)") {
+        if let result = try! "http://AC/BD".match("http://([^/]+)/([^/]+)") {
             XCTAssertEqual(3, result.count)
             XCTAssertEqual("http://AC/BD", result[0])
             XCTAssertEqual("AC", result[1])
@@ -81,7 +87,7 @@ class RLRegExTest: XCTestCase {
     }
     
     func testRegExWords() {
-        if let result = "http://AC/BD/CE".match("(\\w+)") {
+        if let result = try! "http://AC/BD/CE".match("(\\w+)") {
             XCTAssertEqual(2, result.count)
             XCTAssertEqual("http", result[0])
             XCTAssertEqual("http", result[1])
@@ -95,25 +101,42 @@ class RLRegExTest: XCTestCase {
     // MARK: -
     // MARK: gsub
     func test_gsubNoTemplate() {
-        XCTAssertEqual("http://AC/AC/", "http://ac/bd/".gsub("/\\w+", replacement: "/AC")!)
+        
+        do {
+            let str = try "http://ac/bd/".gsub("/\\w+", replacement: "/AC")!
+            XCTAssertEqual("http://AC/AC/", str)
+        } catch let error as NSError {
+            print(error)
+            
+        }
     }
     
     func test_gsubTemplate() {
-        XCTAssertEqual("http://ac/bd/", "http://ac/bd/".gsub("http://(\\w+)/(\\w+)", replacement: "$0")!)
-        XCTAssertEqual("ac/", "http://ac/bd/".gsub("http://(\\w+)/(\\w+)", replacement: "$1")!)
-        XCTAssertEqual("ac", "http://ac/bd/".gsub("http://(\\w+)/(\\w+)/", replacement: "$1")!)
-        XCTAssertEqual("http://bd/", "http://ac/bd/".gsub("(\\w+)/(\\w+)", replacement: "$2")!)
-        XCTAssertEqual("http://acbd/", "http://ac/bd/".gsub("(\\w+)/(\\w+)", replacement: "$1$2")!)
-        XCTAssertEqual("acbd/", "http://ac/bd/".gsub("http://(\\w+)/(\\w+)", replacement: "$1$2")!)
-        XCTAssertEqual("acbd", "http://ac/bd/".gsub("http://(\\w+)/(\\w+)/", replacement: "$1$2")!)
+        var str = try! "http://ac/bd/".gsub("http://(\\w+)/(\\w+)", replacement: "$0")!
+        XCTAssertEqual("http://ac/bd/", str)
+        
+        str = try! "http://ac/bd/".gsub("http://(\\w+)/(\\w+)", replacement: "$1")!
+        XCTAssertEqual("ac/", str)
+        str = try! "http://ac/bd/".gsub("http://(\\w+)/(\\w+)/", replacement: "$1")!
+        XCTAssertEqual("ac", str)
+        str = try! "http://ac/bd/".gsub("(\\w+)/(\\w+)", replacement: "$2")!
+        XCTAssertEqual("http://bd/", str)
+        str = try! "http://ac/bd/".gsub("(\\w+)/(\\w+)", replacement: "$1$2")!
+        XCTAssertEqual("http://acbd/",str)
+        str = try! "http://ac/bd/".gsub("http://(\\w+)/(\\w+)", replacement: "$1$2")!
+        XCTAssertEqual("acbd/",str)
+        str = try! "http://ac/bd/".gsub("http://(\\w+)/(\\w+)/", replacement: "$1$2")!
+        XCTAssertEqual("acbd", str)
     }
     
     func test_gsubError() {
         var error:NSError?
         
-        if let str = "http".gsub("([", replacement: "afd", error:&error) {
+        do {
+            let _ = try "http".gsub("([", replacement: "afd")
             XCTFail("fail")
-        } else {
+        } catch let error1 as NSError {
+            error = error1
             XCTAssertNotNil(error, "\(error)")
         }
     }
@@ -121,10 +144,12 @@ class RLRegExTest: XCTestCase {
     func test_gusbNoError() {
         var error:NSError? = nil
         
-        if let str = "http".gsub("tp", replacement: "TP", error:&error) {
+        do {
+            let str = try "http".gsub("tp", replacement: "TP")
             XCTAssertNil(error)
             XCTAssertEqual("htTP", str)
-        } else {
+        } catch let error1 as NSError {
+            error = error1
             XCTFail("fail \(error)")
         }
     }
@@ -194,7 +219,7 @@ class RLRegExTest: XCTestCase {
             default:
                 XCTFail("default is fail")
             }
-            total++
+            total+=1
             return true
         }
         XCTAssertEqual(4, total)
@@ -228,7 +253,7 @@ class RLRegExTest: XCTestCase {
             default:
                 XCTFail("default is fail")
             }
-            total++
+            total+=1
             return true
         }
         XCTAssertEqual(4, total)
@@ -248,11 +273,24 @@ class RLRegExTest: XCTestCase {
             default:
                 XCTFail("default is fail")
             }
-            total++
+            total+=1
             return false
         }
         XCTAssertEqual(1, total)
     }
+    
+    func testWord() {
+        
+        do {
+            let str = "We must will be\n the dog bad.Test"
+            if let result = try str.match("the") {
+                XCTAssertEqual(1, result.count)
+                XCTAssertEqual("the", result[0])
+            }
+        } catch let err {
+            XCTFail("\(err)")
+        }
+     }
   
     func testExample() {
         // This is an example of a functional test case.
