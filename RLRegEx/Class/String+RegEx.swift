@@ -14,10 +14,14 @@ extension String {
     // MARK: match
 
     public func match(pattern:String) throws -> RLMatch?  {
+        return try match(pattern, options:[])
+    }
+    
+    public func match(pattern:String, options:NSRegularExpressionOptions) throws -> RLMatch?  {
         var error: NSError! = nil
         let regex: NSRegularExpression?
         do {
-            regex = try NSRegularExpression(pattern: pattern, options: [])
+            regex = try NSRegularExpression(pattern: pattern, options: options)
         } catch let error1 as NSError {
             error = error1
             regex = nil
@@ -34,6 +38,7 @@ extension String {
         }
         return nil
     }
+
 
     public func matches(pattern:String, block:(RLMatch) -> Bool) {
         self.matches(pattern, error:nil, block:block)

@@ -291,7 +291,57 @@ class RLRegExTest: XCTestCase {
             XCTFail("\(err)")
         }
      }
-  
+    
+    func testPhrase() {
+        
+        do {
+            let str = try! "We must will be test the match.Double\n count Equal.\nAB CD EF.\n DDD. Test\n Bad Bud".gsub("\n", replacement: " ")!.gsub("\\s+", replacement: " ")!
+            
+            
+            if let result = try str.match("\\s*([^\\.]*we(?:[^\\.]*\\.|.*))", options:[NSRegularExpressionOptions.AllowCommentsAndWhitespace , NSRegularExpressionOptions.CaseInsensitive]) {
+                XCTAssertEqual(2, result.count)
+                XCTAssertEqual("We must will be test the match.", result[0])
+                XCTAssertEqual("We must will be test the match.", result[1])
+            } else {
+                XCTFail("faile")
+            }
+            if let result = try str.match("\\s*([^\\.]*will(?:[^\\.]*\\.|.*))", options:NSRegularExpressionOptions.AllowCommentsAndWhitespace) {
+                XCTAssertEqual(2, result.count)
+                XCTAssertEqual("We must will be test the match.", result[0])
+                XCTAssertEqual("We must will be test the match.", result[1])
+            } else {
+                XCTFail("faile")
+            }
+            
+            if let result = try str.match("\\s*([^\\.]*Double(?:[^\\.]*\\.|.*))", options:NSRegularExpressionOptions.AllowCommentsAndWhitespace) {
+                XCTAssertEqual(2, result.count)
+                let temp = try result[0].gsub("\\s+", replacement: " ")!
+                XCTAssertEqual("Double count Equal.", temp)
+//                XCTAssertEqual("Double count Equal.", result[1])
+            } else {
+                XCTFail("faile")
+            }
+            if let result = try str.match("\\s*([^\\.]*Bud(?:[^\\.]*\\.|.*))", options:NSRegularExpressionOptions.AllowCommentsAndWhitespace) {
+                XCTAssertEqual(2, result.count)
+                let temp = try result[0].gsub("^\\s+", replacement: "")!
+                XCTAssertEqual("Test Bad Bud", temp)
+                XCTAssertEqual("Test Bad Bud", result[1])
+            } else {
+                XCTFail("faile")
+            }
+            if let result = try str.match("\\s*([^\\.]*AB(?:[^\\.]*\\.|.*))", options:NSRegularExpressionOptions.AllowCommentsAndWhitespace) {
+                XCTAssertEqual(2, result.count)
+                let temp = try result[0].gsub("^\\s+", replacement: "")!
+                XCTAssertEqual("AB CD EF.", temp)
+                XCTAssertEqual("AB CD EF.", result[1])
+            } else {
+                XCTFail("faile")
+            }
+           } catch let err {
+            XCTFail("\(err)")
+        }
+     }
+   
     func testExample() {
         // This is an example of a functional test case.
         XCTAssert(true, "Pass")
